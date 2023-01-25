@@ -1,47 +1,23 @@
-var ratingInputs = document.querySelectorAll('.rating-input');
-var ratingGrades = document.querySelectorAll('.rating-grade');
-var ratingProgress = document.querySelectorAll('.rating-progress');
-var ratedCaption = document.querySelector('.rated-caption');
-var totalRating = document.querySelector('.total-rating .total');
-var averageRating = document.querySelector('.average-rating span');
+// JavaScript code for rating system
 
-var totalRatings = 0;
-var totalPoints = 0;
-var average = 0;
+// Get the rating elements
+const ratingElements = document.querySelectorAll('.rating');
 
-// Add event listener for each rating input
-ratingInputs.forEach(function(input) {
-    input.addEventListener('change', function() {
-        var rate = this.value;
-        totalRatings++;
-        totalPoints += parseInt(rate);
-        average = totalPoints / totalRatings;
-        average = average.toFixed(1);
+// Add event listener for when a rating is clicked
+ratingElements.forEach(element => {
+    element.addEventListener('click', (event) => {
+        const clickedRating = event.target;
+        const ratingValue = clickedRating.getAttribute('data-value');
         
-        // Update the average rating
-        averageRating.innerHTML = average;
+        // Remove active class from all ratings
+        ratingElements.forEach(element => {
+            element.classList.remove('active');
+        });
         
-        // Update the total rating
-        totalRating.innerHTML = totalRatings;
+        // Add active class to clicked rating
+        clickedRating.classList.add('active');
         
-        // Update the rating progress
-        updateRatingProgress(rate);
-        
-        // Show the rated caption
-        ratedCaption.classList.remove('hidden');
+        // Update the rating value
+        document.querySelector('.rating-value').innerHTML = ratingValue;
     });
 });
-
-function updateRatingProgress(rate) {
-    ratingProgress.forEach(function(progress) {
-        var progressRate = progress.getAttribute('data-rate');
-        var progressText = progress.querySelector('.progress-bar');
-        
-        if (progressRate == rate) {
-            var currentText = progress.getAttribute('data-text');
-            var newText = parseInt(currentText) + 1;
-            progress.setAttribute('data-text', newText);
-            progressText.style.width = (newText / totalRatings) * 100 + '%';
-        }
-    });
-}
