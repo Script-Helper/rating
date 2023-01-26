@@ -1,23 +1,17 @@
-// JavaScript code for rating system
+let currentRating = 0;
+let rated = false;
 
-// Get the rating elements
-const ratingElements = document.querySelectorAll('.rating');
-
-// Add event listener for when a rating is clicked
-ratingElements.forEach(element => {
-    element.addEventListener('click', (event) => {
-        const clickedRating = event.target;
-        const ratingValue = clickedRating.getAttribute('data-value');
-        
-        // Remove active class from all ratings
-        ratingElements.forEach(element => {
-            element.classList.remove('active');
-        });
-        
-        // Add active class to clicked rating
-        clickedRating.classList.add('active');
-        
-        // Update the rating value
-        document.querySelector('.rating-value').innerHTML = ratingValue;
-    });
-});
+function rate(rating) {
+  if(rated) return;
+  currentRating = rating;
+  rated = true;
+  let stars = document.querySelectorAll(".rating-star");
+  for (let i = 0; i < stars.length; i++) {
+    if (i < rating) {
+      stars[i].classList.add("selected");
+    } else {
+      stars[i].classList.remove("selected");
+    }
+  }
+  document.querySelector("#rating-text").innerHTML = "Your rating: " + rating;
+}
